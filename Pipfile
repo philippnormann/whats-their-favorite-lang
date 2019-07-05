@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+autopep8 = "*"
+
+[packages]
+flask = "*"
+opencv-python = "*"
+requests = "*"
+numpy = "*"
+pyyaml = "*"
+
+[requires]
+python_version = "3.6"

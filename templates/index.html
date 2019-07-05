@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <title>WTFlang</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="scripts" href="{{ url_for('static', filename='js/main.js') }}">
+</head>
+
+<body>
+    <h1>What's the favorite language?</h1>
+    <a href="{{ user.html_url }}">
+        <img src="data:image/jpeg;base64, {{ user.avatar }}" />
+    </a>
+    <br />
+    <div class="choices">
+        {% for choice in choices %}
+        <button>{{ choice }}</button>
+        {% endfor %}
+    </div>
+    <details>
+        <ol>
+            {% for lang, cnt in user.languages %}
+            <li>{{ lang }} ({{ cnt }} repos)</li>
+            {% endfor %}
+        </ol>
+        <button onClick="window.location.reload();">NEXT</button>
+    </details>
+
+</body>
+
+</html>

@@ -10,52 +10,58 @@ html {
 body {
     padding: 0;
     text-align: center;
-    background: #2c3e50;
-    color: #ecf0f1;
+    background: #2f3542;
+    color: #dfe4ea;
     font-family: sans-serif;
 }
 
 h1 {
+    font-size: 24px;
     margin: 20px;
 }
 
-.stats p {
-    margin: 10px 0;
-    display: inline-block;
-    width: 45%;
-    margin: 5px;
-    font-size: 24px;
+.stats {
+    margin: 5px auto;
+    width: 100%;
+    max-width: 1024px;
 }
 
-.stats span {
+.stats p {
+    display: inline-block;
+    width: 25%;
+    font-size: 24px;
     font-weight: 700;
 }
 
 #num_correct {
- color: #27ae60
+    color: #27ae60
 }
 
 #num_wrong {
-    color: #c0392b
+    color: #ff4757
 }
 
 img {
-    width: 100%;
+    width: 80%;
     max-width: 512px;
 }
 
 .choices {
-    margin: 10px 0;
+    display:flex;
+    flex-wrap: wrap;
+    margin: 5px auto;
+    max-width: 1024px;
 }
 
 .choices button {
-    background: #2980b9;
+    display: block;
+    background: #1e90ff;
     font-size: 24px;
-    width: 45%;
+    width: 48%;
     height: 90px;
-    margin: 5px;
+    margin: 1%;
     border: none;
-    outline:none;
+    outline: none;
     border-radius: 10px;
 }
 
@@ -64,15 +70,15 @@ button::-moz-focus-inner {
 }
 
 .choices button:hover {
-    background: #3498db;
+    background: #70a1ff;
 }
 
 .reset {
     padding: 5px 10px;
-    background: #16a085;
-    font-size: 18px;
+    background: #ffa502;
+    font-size: 24px;
     margin: 20px;
     border: none;
-    outline:none;
+    outline: none;
     border-radius: 5px;
 }

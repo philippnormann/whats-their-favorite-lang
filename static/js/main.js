@@ -32,8 +32,8 @@ function processClick(correct, id) {
             num_wrong = parseInt(window.localStorage.getItem('wrong'));
             window.localStorage.setItem("wrong", num_wrong + 1);
         }
-        document.getElementById(id).style.background = "#c0392b";
-        document.getElementsByClassName("correct")[0].style.background = "#27ae60";
+        document.getElementById(id).style.background = "#ff4757";
+        document.getElementsByClassName("correct")[0].style.background = "#2ed573";
         updateScore()
         setTimeout(reload, 100)
     }

@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
     margin: 0;
     padding: 0;
@@ -15,26 +19,60 @@ h1 {
     margin: 20px;
 }
 
+.stats p {
+    margin: 10px 0;
+    display: inline-block;
+    width: 45%;
+    margin: 5px;
+    font-size: 24px;
+}
+
+.stats span {
+    font-weight: 700;
+}
+
+#num_correct {
+ color: #27ae60
+}
+
+#num_wrong {
+    color: #c0392b
+}
+
 img {
     width: 100%;
     max-width: 512px;
 }
 
-button {
-    padding: 25px 50px;
+.choices {
+    margin: 10px 0;
+}
+
+.choices button {
     background: #2980b9;
     font-size: 24px;
     width: 45%;
-    height: 100px;
+    height: 90px;
     margin: 5px;
     border: none;
+    outline:none;
     border-radius: 10px;
 }
 
-button:hover {
+button::-moz-focus-inner {
+    border: 0;
+}
+
+.choices button:hover {
     background: #3498db;
 }
 
-details {
+.reset {
+    padding: 5px 10px;
+    background: #16a085;
+    font-size: 18px;
     margin: 20px;
+    border: none;
+    outline:none;
+    border-radius: 5px;
 }

@@ -6,13 +6,14 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+jupyterlab = "*"
+matplotlib = "*"
 
 [packages]
 flask = "*"
 opencv-python = "*"
 requests = "*"
 numpy = "*"
-pyyaml = "*"
 
 [requires]
 python_version = "3.6"

@@ -2,29 +2,33 @@
 
 <head>
     <title>WTFlang</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="scripts" href="{{ url_for('static', filename='js/main.js') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 
-<body>
+<body onload="updateScore()">
+
     <h1>What's the favorite language?</h1>
     <a href="{{ user.html_url }}">
-        <img src="data:image/jpeg;base64, {{ user.avatar }}" />
+        <img src="data:image/jpeg;base64, {{ user.avatar }}"/>
     </a>
-    <br />
+    <br/>
     <div class="choices">
         {% for choice in choices %}
-        <button>{{ choice }}</button>
+            {% if choice == user.top_language %}
+                <button class="correct" id="{{ loop.index }}" onclick="processClick(true, {{ loop.index }})">{{ choice }}</button>
+            {% else %}
+                <button id="{{ loop.index }}" onclick="processClick(false, {{ loop.index }})">{{ choice }}</button>
+            {% endif %}
         {% endfor %}
     </div>
-    <details>
-        <ol>
-            {% for lang, cnt in user.languages %}
-            <li>{{ lang }} ({{ cnt }} repos)</li>
-            {% endfor %}
-        </ol>
-        <button onClick="window.location.reload();">NEXT</button>
-    </details>
+
+    <div class="stats">    
+        <p>Correct: <span id="num_correct">0</span></p>
+        <p>Wrong: <span id="num_wrong">0</span></p>
+    </div>
+    <button class="reset" onclick="resetResults()">Reset ↻</button>
+
 
 </body>
 

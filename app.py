@@ -4,22 +4,27 @@ import base64
 import requests
 import cv2
 import numpy as np
-import yaml
+import io
 import json
 import logging
+import time
 from flask import Flask, render_template
-app = Flask('whats-the-favorie-lang')
 
 DEV_GITHUB_USER = 'philippnormann1337'
 DEV_ACCESS_TOKEN = '***REMOVED***'
 
 logging.basicConfig(level=logging.INFO)
+app = Flask('whats-the-favorite-lang')
+log = logging.getLogger('werkzeug')
+log.disabled = True
 
 frontal_face_cascade = cv2.CascadeClassifier(
     'resources/haarcascade_frontalface_default.xml')
 profile_face_cascade = cv2.CascadeClassifier(
     'resources/haarcascade_profileface.xml')
-# all_language = yaml.load('resources/languages.yml')
+eye_cascade = cv2.CascadeClassifier(
+    'resources/haarcascade_eye.xml')
+
 with open('resources/popularity.json') as f:
     popularity = json.loads(f.read())
     languages = [lang for lang, score in sorted(
@@ -30,7 +35,8 @@ def detect_faces(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     frontal_faces = frontal_face_cascade.detectMultiScale(gray, 1.3, 5)
     profile_faces = profile_face_cascade.detectMultiScale(gray, 1.2, 4)
-    return frontal_faces, profile_faces
+    eyes = eye_cascade.detectMultiScale(gray, 1.4, 5)
+    return frontal_faces, profile_faces, eyes
 
 
 def draw_faces(img, faces, color=(255, 0, 0)):
@@ -48,16 +54,21 @@ def encode_image(img):
 
 
 def get_avatar(user):
-    return requests.get(user['avatar_url'], stream=True).raw.read()
+    logging.info(f'Fetching avatar of {user["login"]}')
+    resp = requests.get(user['avatar_url'], stream=True)
+    if resp.status_code != 200:
+        raise ConnectionError(resp.text)
+    return resp.raw.read()
 
 
 def get_repos(username):
-    resp = requests.get(
-        f'https://api.github.com/users/{username}/repos', auth=(DEV_GITHUB_USER, DEV_ACCESS_TOKEN))
+    resp = requests.get(f'https://api.github.com/users/{username}/repos',
+                        auth=(DEV_GITHUB_USER, DEV_ACCESS_TOKEN))
     if resp.status_code == 403:
         raise ConnectionError('Quota exceeded!')
     if resp.status_code != 200:
-        raise ConnectionError(f'Unexpected API Error: {resp.status_code}')
+        raise ConnectionError(
+            f'Unexpected API Error: {resp.status_code} - {resp.text}')
     return resp.json()
 
 
@@ -69,7 +80,8 @@ def get_random_users(min_followers=50, random_query_len=2):
     if resp.status_code == 403:
         raise ConnectionError('Quota exceeded!')
     if resp.status_code != 200:
-        raise ConnectionError(f'Unexpected API Error: {resp.status_code}')
+        raise ConnectionError(
+            f'Unexpected API Error: {resp.status_code} - {resp.text}')
     users = resp.json()['items']
     logging.info(f'Got {len(users)} users for query: {rand_letters}')
     return users
@@ -78,16 +90,23 @@ def get_random_users(min_followers=50, random_query_len=2):
 def get_random_user_with_face():
     frontal_faces = []
     profile_faces = []
+    eyes = []
+    users = []
     logging.info('Looking for a random face...')
-    while len(frontal_faces) <= 0 and len(profile_faces) <= 0:
+
+    while len(frontal_faces) <= 0 and len(profile_faces) <= 0 and len(eyes) <= 0:
         users = get_random_users()
-        if len(users) > 0:
-            rand_user = random.choice(users)
-            img_bytes = get_avatar(rand_user)
-            if len(img_bytes) > 0:
-                img = decode_image(img_bytes)
-                frontal_faces, profile_faces = detect_faces(img)
-    return rand_user, img, frontal_faces, profile_faces
+        random.shuffle(users)
+        while len(users) > 0 and len(frontal_faces) <= 0 and len(profile_faces) <= 0 and len(eyes) <= 0:
+            rand_user = users.pop()
+            try:
+                img_bytes = get_avatar(rand_user)
+                if len(img_bytes) > 0:
+                    img = decode_image(img_bytes)
+                    frontal_faces, profile_faces, eyes = detect_faces(img)
+            except:
+                pass
+    return rand_user, img, frontal_faces, profile_faces, eyes
 
 
 def get_languages(repos):
@@ -101,22 +120,24 @@ def get_languages(repos):
 
 @app.route('/')
 def quiz():
+    start = time.time()
     try:
-        user, img, frontal_faces, profile_faces = get_random_user_with_face()
+        user, img, frontal_faces, profile_faces, eyes = get_random_user_with_face()
         repos = get_repos(user['login'])
         user['languages'] = get_languages(repos)
         user['top_language'] = user['languages'][0][0]
         img = draw_faces(img, frontal_faces, color=(255, 0, 0))
         img = draw_faces(img, profile_faces, color=(0, 0, 255))
+        img = draw_faces(img, eyes, color=(0, 255, 0))
         img_bytes = encode_image(img)
         img_base64 = base64.b64encode(img_bytes)
         user['avatar'] = img_base64.decode('utf-8')
-        top_50_without_top = [
-            lang for lang in languages[:50] if lang != user['top_language']]
+        top_50_without_top = [lang for lang in languages[:50]
+                              if lang != user['top_language']]
         choices = random.sample(top_50_without_top, k=3)
         choices.append(user['top_language'])
         random.shuffle(choices)
-
+        logging.info(f'Responded in {((time.time() - start) * 100):.2f} ms')
         return render_template('index.html', user=user, choices=choices)
     except ConnectionError as err:
         return str(err)

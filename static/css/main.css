@@ -1,54 +1,55 @@
 * {
     box-sizing: border-box;
     color: #f1f2f6;
+    vertical-align: middle;
+    text-align: center;
     border: 0;
-}
-
-*:focus {
-    outline: none;
-    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 html {
-    margin: 0;
-    padding: 0;
     width: 100%;
     overflow-x: hidden;
     font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
 body {
-    padding: 0;
-    margin: 0;
     font-size: 16px;
     width: 100%;
-    text-align: center;
     background: #2f3542;
 }
 
-h1 {
-    font-size: 1.8em;
-    margin: 10px;
+.logo {
+    margin: 5px;
+    width: 48px;
 }
 
-img {    
-    max-width: 560px;
-    margin: 5px 0;
+header {
     width: 75%;
+    max-width: 512px;
+    margin: 5px auto;
+}
+
+h1 {
+    font-size: 1.6em;
+    line-height: 1.2em;
 }
 
 a {
     text-decoration: none;
 }
 
+.face {    
+    max-width: 512px;
+    margin: 5px 0;
+    width: 75%;
+}
+
 button {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     cursor: pointer;
     font-weight: 700;
-}
-
-button::-moz-focus-inner {
-    border: 0;
 }
 
 .choices {
@@ -66,8 +67,6 @@ button::-moz-focus-inner {
     width: 48%;
     height: 90px;
     margin: 1%;
-    border: none;
-    outline: none;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -90,7 +89,7 @@ button::-moz-focus-inner {
     width: 100px;
     border-radius: 5px;
     margin: 0 auto;
-    font-size: 3em;
+    font-size: 2.4em;
     font-weight: 700;
 }
 
@@ -103,12 +102,9 @@ button::-moz-focus-inner {
 }
 
 .reset {
-    padding: 5px 10px;
     background: #ffa502;
     font-size: 1.8em;
-    width: 75px;
-    border: none;
-    outline: none;
+    width: 60px;
     border-radius: 5px;
 }
 

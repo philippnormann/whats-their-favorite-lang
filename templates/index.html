@@ -6,35 +6,41 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>WTFlang</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" sizes="any">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 
 <body onload="updateScore()">
+    <header>
+        <img class="logo" src="{{ url_for('static', filename='favicon.svg') }}" />
+        <h1>What's the favorite language?</h1>
+    </header>
 
-    <h1>What's the favorite language?</h1>
-    <a href="{{ user.html_url }}"><img src="data:image/jpeg;base64, {{ user.avatar }}"/></a>
+    <a href="{{ user.html_url }}"><img class="face" src="data:image/jpeg;base64, {{ user.avatar }}" /></a>
 
-    <div class="stats">    
-            <p id="num_correct">0</p>
-            <button class="reset" onclick="resetStats()">↻</button>
-            <p id="num_wrong">0</p>
+    <div class="stats">
+        <p id="num_correct">0</p>
+        <button class="reset" onclick="resetStats()">↻</button>
+        <p id="num_wrong">0</p>
     </div>
 
     <div class="choices">
         {% for choice in choices %}
-            {% if choice == user.top_language %}
-                <button class="correct" id="{{ loop.index }}" onclick="processClick(true, {{ loop.index }})">{{ choice }}</button>
-            {% else %}
-                <button id="{{ loop.index }}" onclick="processClick(false, {{ loop.index }})">{{ choice }}</button>
-            {% endif %}
+        {% if choice == user.top_language %}
+        <button class="correct" id="{{ loop.index }}"
+            onclick="processClick(true, {{ loop.index }})">{{ choice }}</button>
+        {% else %}
+        <button id="{{ loop.index }}" onclick="processClick(false, {{ loop.index }})">{{ choice }}</button>
+        {% endif %}
         {% endfor %}
     </div>
 
-    <div class="github">
-            <a class="github-button" href="https://github.com/philippnormann1337/whats-the-favorite-lang" data-size="large" data-show-count="true" aria-label="Star philippnormann1337/whats-the-favorite-lang on GitHub">Star</a>
-    </div>
+    <footer class="github">
+        <a class="github-button" href="https://github.com/philippnormann1337/whats-the-favorite-lang" data-size="large"
+            data-show-count="true" aria-label="Star philippnormann1337/whats-the-favorite-lang on GitHub">Star</a>
+    </footer>
 
 </body>
 

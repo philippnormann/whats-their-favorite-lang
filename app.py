@@ -27,8 +27,11 @@ eye_cascade = cv2.CascadeClassifier(
 
 with open('resources/popularity.json') as f:
     popularity = json.loads(f.read())
-    languages = [lang for lang, score in sorted(
-        popularity.items(), key=lambda x: x[1], reverse=True)]
+    popularity = sorted(popularity.items(), key=lambda x: x[1], reverse=True)
+    languages = [lang for lang, score in popularity]
+    scores = np.array([score for lang, score in popularity])
+    scores = np.sqrt(scores)
+    scores = scores/np.sum(scores)
 
 
 def detect_faces(img):
@@ -36,7 +39,7 @@ def detect_faces(img):
     frontal_faces = frontal_face_cascade.detectMultiScale(gray, 1.3, 5)
     profile_faces = profile_face_cascade.detectMultiScale(gray, 1.2, 4)
     eyes = eye_cascade.detectMultiScale(gray, 1.4, 5)
-    return frontal_faces, profile_faces, eyes
+    return (len(frontal_faces)+ len(profile_faces) + len(eyes)) > 0
 
 
 def draw_faces(img, faces, color=(255, 0, 0)):
@@ -50,7 +53,9 @@ def decode_image(img_bytes):
 
 
 def encode_image(img):
-    return cv2.imencode('.jpg', img)[1]
+    img_bytes = cv2.imencode('.jpg', img)[1]
+    base64_bytes = base64.b64encode(img_bytes)
+    return base64_bytes.decode('utf-8')
 
 
 def get_avatar(user):
@@ -88,25 +93,21 @@ def get_random_users(min_followers=50, random_query_len=2):
 
 
 def get_random_user_with_face():
-    frontal_faces = []
-    profile_faces = []
-    eyes = []
-    users = []
+    faces_detected = False
     logging.info('Looking for a random face...')
-
-    while len(frontal_faces) <= 0 and len(profile_faces) <= 0 and len(eyes) <= 0:
+    while not faces_detected:
         users = get_random_users()
         random.shuffle(users)
-        while len(users) > 0 and len(frontal_faces) <= 0 and len(profile_faces) <= 0 and len(eyes) <= 0:
+        while len(users) > 0 and not faces_detected:
             rand_user = users.pop()
             try:
                 img_bytes = get_avatar(rand_user)
                 if len(img_bytes) > 0:
                     img = decode_image(img_bytes)
-                    frontal_faces, profile_faces, eyes = detect_faces(img)
+                    faces_detected = detect_faces(img)
             except:
                 pass
-    return rand_user, img, frontal_faces, profile_faces, eyes
+    return rand_user, img
 
 
 def get_languages(repos):
@@ -122,19 +123,14 @@ def get_languages(repos):
 def quiz():
     start = time.time()
     try:
-        user, img, frontal_faces, profile_faces, eyes = get_random_user_with_face()
+        user, img = get_random_user_with_face()
         repos = get_repos(user['login'])
         user['languages'] = get_languages(repos)
         user['top_language'] = user['languages'][0][0]
-        img = draw_faces(img, frontal_faces, color=(255, 0, 0))
-        img = draw_faces(img, profile_faces, color=(0, 0, 255))
-        img = draw_faces(img, eyes, color=(0, 255, 0))
-        img_bytes = encode_image(img)
-        img_base64 = base64.b64encode(img_bytes)
-        user['avatar'] = img_base64.decode('utf-8')
-        top_50_without_top = [lang for lang in languages[:50]
-                              if lang != user['top_language']]
-        choices = random.sample(top_50_without_top, k=3)
+        user['avatar'] = encode_image(img)
+        choices = np.random.choice(languages, 4, p=scores, replace=False)
+        choices = [lang for lang in choices
+                   if lang != user['top_language']][:3]
         choices.append(user['top_language'])
         random.shuffle(choices)
         logging.info(f'Responded in {((time.time() - start) * 100):.2f} ms')

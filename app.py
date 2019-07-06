@@ -5,13 +5,14 @@ import requests
 import cv2
 import numpy as np
 import io
+import os
 import json
 import logging
 import time
 from flask import Flask, render_template
 
-DEV_GITHUB_USER = 'philippnormann1337'
-DEV_ACCESS_TOKEN = '***REMOVED***'
+DEV_GITHUB_USER = os.environ['DEV_GITHUB_USER']
+DEV_ACCESS_TOKEN = os.environ['DEV_ACCESS_TOKEN']
 
 logging.basicConfig(level=logging.INFO)
 app = Flask('whats-the-favorite-lang')

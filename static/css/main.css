@@ -1,26 +1,84 @@
 * {
     box-sizing: border-box;
+    color: #f1f2f6;
+    border: 0;
+}
+
+*:focus {
+    outline: none;
+    border: none;
 }
 
 html {
     margin: 0;
     padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
 body {
     padding: 0;
+    margin: 0;
+    font-size: 16px;
+    width: 100%;
     text-align: center;
     background: #2f3542;
-    color: #dfe4ea;
-    font-family: sans-serif;
 }
 
 h1 {
-    font-size: 24px;
-    margin: 20px;
+    font-size: 1.8em;
+    margin: 10px;
+}
+
+img {    
+    max-width: 560px;
+    margin: 5px 0;
+    width: 75%;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+button::-moz-focus-inner {
+    border: 0;
+}
+
+.choices {
+    display:flex;
+    flex-wrap: wrap;
+    margin: 5px auto;
+    width: 100%;
+    max-width: 1024px;
+}
+
+.choices button {
+    display: block;
+    background: #1e90ff;
+    font-size: 1.5em;
+    width: 48%;
+    height: 90px;
+    margin: 1%;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.choices button:hover {
+    background: #70a1ff;
 }
 
 .stats {
+    display:flex;
+    flex-wrap: wrap;
     margin: 5px auto;
     width: 100%;
     max-width: 1024px;
@@ -28,57 +86,36 @@ h1 {
 
 .stats p {
     display: inline-block;
-    width: 25%;
-    font-size: 24px;
+    text-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    width: 100px;
+    border-radius: 5px;
+    margin: 0 auto;
+    font-size: 3em;
     font-weight: 700;
 }
 
 #num_correct {
-    color: #27ae60
+    color: #27ae60;
 }
 
 #num_wrong {
-    color: #ff4757
-}
-
-img {
-    width: 80%;
-    max-width: 512px;
-}
-
-.choices {
-    display:flex;
-    flex-wrap: wrap;
-    margin: 5px auto;
-    max-width: 1024px;
-}
-
-.choices button {
-    display: block;
-    background: #1e90ff;
-    font-size: 24px;
-    width: 48%;
-    height: 90px;
-    margin: 1%;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-}
-
-button::-moz-focus-inner {
-    border: 0;
-}
-
-.choices button:hover {
-    background: #70a1ff;
+    color: #ff4757;
 }
 
 .reset {
     padding: 5px 10px;
     background: #ffa502;
-    font-size: 24px;
-    margin: 20px;
+    font-size: 1.8em;
+    width: 75px;
     border: none;
     outline: none;
     border-radius: 5px;
+}
+
+.reset:hover {
+    background: #eccc68;
+}
+
+.github {
+    margin: 10px;
 }

@@ -35,6 +35,6 @@ function processClick(correct, id) {
         document.getElementById(id).style.background = "#ff4757";
         document.getElementsByClassName("correct")[0].style.background = "#2ed573";
         updateScore()
-        setTimeout(reload, 100)
+        setTimeout(reload, 500)
     }
 }

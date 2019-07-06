@@ -15,8 +15,6 @@ DEV_ACCESS_TOKEN = '***REMOVED***'
 
 logging.basicConfig(level=logging.INFO)
 app = Flask('whats-the-favorite-lang')
-log = logging.getLogger('werkzeug')
-log.disabled = True
 
 frontal_face_cascade = cv2.CascadeClassifier(
     'resources/haarcascade_frontalface_default.xml')
@@ -39,7 +37,7 @@ def detect_faces(img):
     frontal_faces = frontal_face_cascade.detectMultiScale(gray, 1.3, 5)
     profile_faces = profile_face_cascade.detectMultiScale(gray, 1.2, 4)
     eyes = eye_cascade.detectMultiScale(gray, 1.4, 5)
-    return (len(frontal_faces)+ len(profile_faces) + len(eyes)) > 0
+    return (len(frontal_faces) + len(profile_faces) + len(eyes)) > 0
 
 
 def draw_faces(img, faces, color=(255, 0, 0)):
@@ -59,15 +57,17 @@ def encode_image(img):
 
 
 def get_avatar(user):
-    logging.info(f'Fetching avatar of {user["login"]}')
+    logging.info(f'Fetching avatar for {user["login"]}')
     resp = requests.get(user['avatar_url'], stream=True)
-    if resp.status_code != 200:
+    img_bytes = resp.raw.read()
+    if resp.status_code != 200 or len(img_bytes) < 0:
         raise ConnectionError(resp.text)
-    return resp.raw.read()
+    return img_bytes
 
 
-def get_repos(username):
-    resp = requests.get(f'https://api.github.com/users/{username}/repos',
+def get_repos(user):
+    logging.info("Fetching repos for " + user["login"])
+    resp = requests.get(f'https://api.github.com/users/{user["login"]}/repos',
                         auth=(DEV_GITHUB_USER, DEV_ACCESS_TOKEN))
     if resp.status_code == 403:
         raise ConnectionError('Quota exceeded!')
@@ -92,27 +92,33 @@ def get_random_users(min_followers=50, random_query_len=2):
     return users
 
 
-def get_random_user_with_face():
-    faces_detected = False
-    logging.info('Looking for a random face...')
-    while not faces_detected:
+def get_random_user_with_repos():
+    rand_user = {}
+    logging.info('Looking for a random user...')
+    while True:
         users = get_random_users()
         random.shuffle(users)
-        while len(users) > 0 and not faces_detected:
+        while 'avatar' not in rand_user and len(users) > 0:
             rand_user = users.pop()
             try:
                 img_bytes = get_avatar(rand_user)
-                if len(img_bytes) > 0:
-                    img = decode_image(img_bytes)
-                    faces_detected = detect_faces(img)
-            except:
+                img = decode_image(img_bytes)
+                faces_detected = detect_faces(img)
+                if faces_detected:
+                    repos = get_repos(rand_user)
+                    rand_user['languages'] = get_languages(repos)
+                    if len(rand_user['languages']) > 0:
+                        rand_user['top_language'] = rand_user['languages'][0][0]
+                        rand_user['avatar'] = encode_image(img)
+                        return rand_user, repos
+            except Exception as e:
+                logging.error(f'{type(e)} - {e}')
                 pass
-    return rand_user, img
 
 
 def get_languages(repos):
-    languages = [repo['language']
-                 for repo in repos if repo['language'] is not None]
+    languages = [repo['language'] for repo in repos
+                 if repo['language'] is not None]
     language_counts = {}
     for lang in languages:
         language_counts[lang] = language_counts.setdefault(lang, 0) + 1
@@ -123,11 +129,7 @@ def get_languages(repos):
 def quiz():
     start = time.time()
     try:
-        user, img = get_random_user_with_face()
-        repos = get_repos(user['login'])
-        user['languages'] = get_languages(repos)
-        user['top_language'] = user['languages'][0][0]
-        user['avatar'] = encode_image(img)
+        user, _ = get_random_user_with_repos()
         choices = np.random.choice(languages, 4, p=scores, replace=False)
         choices = [lang for lang in choices
                    if lang != user['top_language']][:3]

@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="12.54991mm"
+   width="20.490753mm"
    height="12.310105mm"
-   viewBox="0 0 12.54991 12.310105"
+   viewBox="0 0 20.490754 12.310105"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="favicon.svg"
+   sodipodi:docname="logo.svg"
    style="enable-background:new">
   <defs
      id="defs2" />
@@ -27,13 +27,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="41.667523"
-     inkscape:cy="16.835901"
+     inkscape:cx="53.240119"
+     inkscape:cy="16.83592"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-text-baseline="true"
-     showguides="false"
+     showguides="true"
      inkscape:window-width="1920"
      inkscape:window-height="1012"
      inkscape:window-x="0"
@@ -45,10 +45,17 @@
      inkscape:bbox-paths="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-page="true"
-     fit-margin-top="2"
-     fit-margin-bottom="5"
-     fit-margin-left="2"
-     fit-margin-right="5e-06" />
+     fit-margin-top="0"
+     fit-margin-bottom="0"
+     fit-margin-left="0"
+     fit-margin-right="1e-05"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="-0.7408334,1.4951033"
+       orientation="0,1"
+       id="guide4797"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -65,7 +72,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-35.049314,-76.838888)">
+     transform="translate(-31.987398,-76.838888)">
     <g
        aria-label="?"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2ed573;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -88,10 +95,30 @@
          d="m 46.62254,77.348819 h -2.8448 l 0.3556,7.416799 h 2.150533 z m -1.4224,8.957733 c -0.846667,0 -1.524,0.694266 -1.524,1.524 0,0.846666 0.677333,1.540933 1.524,1.540933 0.8636,0 1.524,-0.694267 1.524,-1.540933 0,-0.829734 -0.6604,-1.524 -1.524,-1.524 z"
          inkscape:connector-curvature="0" />
     </g>
+    <g
+       aria-label="&lt;"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="text4748">
+      <path
+         id="path4803"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Fira Mono';-inkscape-font-specification:'Fira Mono Bold';fill:#f1f2f6;fill-opacity:1;stroke-width:0.26458332"
+         d="m 36.125481,81.166309 -4.138083,2.57175 v 1.195917 l 4.116917,2.561167 0.762,-1.195917 -3.439584,-1.9685 3.439584,-2.010833 z"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       aria-label="&gt;"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;enable-background:new"
+       id="text4748-6">
+      <path
+         id="path4799"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Fira Mono';-inkscape-font-specification:'Fira Mono Bold';fill:#f1f2f6;fill-opacity:1;stroke-width:0.26458332"
+         d="m 48.340057,81.124607 -0.740833,1.2065 3.429,1.957917 -3.429,2.021416 0.751417,1.143 4.1275,-2.561166 v -1.2065 z"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer 2"
-     transform="translate(1.0080786,-2.4868794)" />
+     transform="translate(4.0699944,-2.48688)" />
 </svg>

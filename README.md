@@ -1,4 +1,4 @@
-# What's the favorite language?
+# What's their favorite language?
 
 Can you tell the favorite programming language of GitHub users, only by looking at their faces?
 
